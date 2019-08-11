@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "cat-notifier-dev-20190809033719-authRole",
+            "UnauthRoleArn": "arn:aws:iam::448746263282:role/cat-notifier-dev-20190809033719-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::448746263282:role/cat-notifier-dev-20190809033719-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "cat-notifier-dev-20190809033719-deployment",
+            "UnauthRoleName": "cat-notifier-dev-20190809033719-unauthRole",
+            "StackName": "cat-notifier-dev-20190809033719",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:448746263282:stack/cat-notifier-dev-20190809033719/8e423120-ba0b-11e9-9f4d-0630d5fedeae"
+        },
+        "categories": {
+            "auth": {
+                "catnotifier31407cd4": {}
+            }
+        }
+    }
+}
