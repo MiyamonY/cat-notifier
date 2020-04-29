@@ -8,11 +8,15 @@
             "DeploymentBucketName": "cat-notifier-dev-20190809033719-deployment",
             "UnauthRoleName": "cat-notifier-dev-20190809033719-unauthRole",
             "StackName": "cat-notifier-dev-20190809033719",
-            "StackId": "arn:aws:cloudformation:ap-northeast-1:448746263282:stack/cat-notifier-dev-20190809033719/8e423120-ba0b-11e9-9f4d-0630d5fedeae"
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:448746263282:stack/cat-notifier-dev-20190809033719/8e423120-ba0b-11e9-9f4d-0630d5fedeae",
+            "AmplifyAppId": "d133iej6lojyd2"
         },
         "categories": {
             "auth": {
                 "catnotifier31407cd4": {}
+            },
+            "function": {
+                "S3Trigger272aba2d": {}
             }
         }
     }

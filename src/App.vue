@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="primary">
-      <v-icon color="white">notifications</v-icon>
+      <v-icon color="white">{{ mainIcon }}</v-icon>
       <v-toolbar-title>
         <span color="white">Cat Notifier</span>
       </v-toolbar-title>
@@ -19,14 +19,16 @@
 <script>
 import VideoTable from './components/VideoTable.vue'
 import { components } from 'aws-amplify-vue'
+import { mdiBellRing } from '@mdi/js'
 
 export default {
     name: 'App',
     components: {
 	VideoTable,
 	...components
-  },
+    },
     data: () => ({
+	mainIcon: mdiBellRing,
 	authConfig: {
 	    signUpConfig:{
 		hideAllDefaults: true
