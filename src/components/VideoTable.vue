@@ -1,20 +1,20 @@
 <template>
   <div>
     <v-simple-table>
-      <thead>
-      <tr>
-        <th class="text-left">撮影日時</th>
-        <th class="text-left">ファイル名</th>
-        <th>お気に入り</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in videos" :key="item.name" v-on:click="onOpenVideo(index, true)">
-        <td>{{ toLocaleDate(item.lastModified) }}</td>
-        <td>{{ item.key }}</td>
-        <td><v-icon color="grey">{{star}}</v-icon></td>  
-      </tr>
-    </tbody>
+      <v-data-table
+        v-model="videoSelected"
+        :headers="headers"
+        :items="videos"
+        item-key="name"
+        class="elevation-1">
+        <template v-slot:item="{ item }">
+          <tr v-on:click="onOpenVideo(item.key, true)">
+            <td>{{ toLocaleDate(item.lastModified) }}</td>
+            <td>{{ item.key }}</td>
+            <td><v-icon>star</v-icon></td>
+          </tr>
+        </template>
+      </v-data-table>
     </v-simple-table>
     <v-dialog v-model="dialog">
       <div class="dialog-wrapper">
@@ -40,6 +40,7 @@ import { mdiChevronRight, mdiChevronLeft, mdiStar } from '@mdi/js'
 export default{
   name: 'VideoTable',
   data: () => ({
+    videoSelected: [],
 	  videos:[],
 	  dialog: false,
     src: "",
@@ -48,15 +49,18 @@ export default{
 	  leftArrow: mdiChevronLeft,
     rightArrow: mdiChevronRight,
     star: mdiStar,
+    headers: [
+      { text: '撮影日時', value: 'datetime' },
+      { text: 'ファイル名', value: 'key' },
+      { text: 'お気に入り',}, 
+    ],
   }),
   methods: {
 	  padding0(num) {
 	    return ('0' + num).slice(-2)
 	  },
   	toLocaleDate(datestr) {
-	    console.log(datestr)
 	    const d = new Date(datestr)
-	    console.log(d)
 	    const year = d.getFullYear()
 	    const month = d.getMonth()
 	    const date = d.getDate()
@@ -66,26 +70,32 @@ export default{
 	    return `${year}/${month+1}/${date} ${this.padding0(hours)}:${this.padding0(minues)}:${this.padding0(second)}`
 	  },
 	  async getVideos(){
-	    const videos = await Storage.list('')
-	    this.videos.push(...videos)
-	  },
-  	async onOpenVideo(index, open){
-      this.playingIndex = index
-      const video = this.videos[index]
-	    const src = await Storage.get(video.key, { expires: 120 })
-      this.src = src
-      this.dateTime = this.toLocaleDate(video.lastModified)
+      const vs = await Storage.list('')
+	    this.videos.push(...vs)
+    },
+  	onOpenVideo(key, open){
+      const index = this.videos.findIndex(element => element.key == key)  
+      this.setVideoByIndex(index)
       if (open) {
         this.dialog = true
       }
-	  },
+    },
+    setVideoByIndex(index){
+      this.playingIndex = index
+      this.setVideo(this.videos[index])
+    },
+    async setVideo(video){
+      this.dateTime = this.toLocaleDate(video.lastModified)
+  	  const src = await Storage.get(video.key, { expires: 120 })
+      this.src = src
+    },
     videoNext(){
       console.log("next")
-      this.onOpenVideo(this.playingIndex+1, false)
+      this.setVideoByIndex(this.playingIndex+1)
     },
     videoPrev(){
       console.log("prev")
-      this.onOpenVideo(this.playingIndex-1, false)
+      this.setVideoByIndex(this.playingIndex-1)
     }
   },
   created(){
