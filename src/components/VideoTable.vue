@@ -6,6 +6,7 @@
         :headers="headers"
         :items="videos"
         item-key="name"
+        :custom-sort="customSort"
         class="elevation-1">
         <template v-slot:item="{ item }">
           <tr v-on:click="onOpenVideo(item.key, true)">
@@ -56,6 +57,27 @@ export default{
     ],
   }),
   methods: {
+    customSort: function(items, index, isDesc) {
+      console.log(index)
+      items.sort((a, b) => {
+        if (index[0]=='datetime') {
+          if (!isDesc[0]) {
+              return new Date(b['lastModified']) - new Date(a['lastModified']);
+          } else {
+              return new Date(a['lastModified']) - new Date(b['lastModified']);
+          }
+        } else {
+          if(typeof a[index] !== 'undefined'){
+            if (!isDesc[0]) {
+               return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+            } else {
+                return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+            }
+          }
+        }
+      })
+      return items
+    },  
 	  padding0(num) {
 	    return ('0' + num).slice(-2)
 	  },
